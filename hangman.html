@@ -1,0 +1,218 @@
+<!--- 
+	How to use game: 
+
+
+
+
+	Ref :  links ...
+
+
+
+
+
+    -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style type="text/css">
+  	body{
+  		background-color: pink;
+  	}
+ 	p{
+ 		font-family:serif;
+ 		font-size: 30px;
+ 	}
+    #alphabet,#answer{
+        padding: 30px;
+
+    }
+	#answer{
+        padding-left: 180px;
+        
+    }
+   #question{
+        padding:60px;
+        
+    }
+    button{
+       width:8%;
+         display: block;
+         margin-top: 10px;
+
+       
+    }
+    #lives{
+    	padding:80px;
+    	
+    }
+    
+	
+	input[type="text"] {
+	    background-color: transparent;
+	    border: none;
+	    border-bottom: 2px solid gray;
+	    display: inline-block;
+	    font-size: 20px;
+	    margin: 0 5px;
+	    width: 2rem;
+	    text-align: center;
+	}
+
+  </style>
+
+
+  <script type="text/javascript">
+  	var alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+    var print, counter=2, result=0; 
+    var key_answer;
+    var ch=""; var answer=[]; var id;
+    var allQuestions = [
+	    {
+		    question: 'What is the capital city of Australia?',
+		    answer :'Melbourne', 
+		    id : 0
+		},
+		{
+		    question: 'Who won the 2014 FIFA World Cup?',
+		   	answer: 'Germany',
+			 id:1
+		},
+		{
+		    question: 'What book series is authored by J.K Rowling?',
+			answer: 'Harry Potter',
+		 	id: 2
+		},
+		{	   
+		    question: 'The Eiffel Tower is located in which following country?',
+		    answer: 'France',
+		    id: 3
+		}
+	];
+	var keyanswer;
+	var key_answer_length;
+	var display = "-";
+	var i,j;
+	var dashes;
+
+
+	function getRndInteger(min, max) {
+		return Math.floor(Math.random() * (max - min)) + min;
+	}
+
+	function playGame(){
+		i=getRndInteger(0,4);
+		console.log(i);
+		console.log(allQuestions[i].question);
+		
+		
+		var length =allQuestions[i].answer.length; 	
+		console.log(allQuestions[i].answer);
+		allQuestions[i].is_displayed =true;
+		dashes = display.repeat(length);
+		
+		console.log(display.repeat(length));
+		$("#question_span").append(allQuestions[i].question);
+		$("#fill_answer_p").append(dashes);
+	}
+
+	
+	
+// Initial load alphabet buttons
+	$(document).ready(function () {
+		$("#question").empty();
+		playGame();
+		
+		for(let i=0;i<alphabet.length;i++) {
+		    var x=alphabet[i];
+	  		print = '<button type="button" id='+x+'  class="btn btn-outline-success" >'+alphabet[i]+'</button>' ;
+	  		print +='\xa0\xa0\xa0\xa0\xa0\xa0\xa0';  
+	 		$("#alphabet").append(print);
+	  	}
+
+	  	String.prototype.replaceAt = function(index, replacement) {
+	    	return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+		}
+	    
+	  	$("button").click(function(){
+			ch = $(this).attr('id');
+			alert(ch);
+
+			var keyanswer = allQuestions[i].answer.toUpperCase();
+			console.log(keyanswer);
+			for(let j=0;j<keyanswer.length;j++){
+					
+					if(ch == keyanswer[j]){
+						console.log(ch+" index= "+j);
+						dashes = dashes.replaceAt(j,ch);
+						$("#fill_answer_p").empty();
+						$("#fill_answer_p").append(dashes);
+
+					}
+				}
+			
+				/*if(keyanswer.includes(ch)){
+					var index = keyanswer.indexOf(ch);
+					console.log("index=="+index);
+					dashes = dashes.replaceAt(index,ch);
+					$("#fill_answer_p").empty();
+					$("#fill_answer_p").append(dashes);
+				
+				}else{
+					alert("This letter does not exist..... please try another letter!");
+					break;
+				}*/
+			   
+	  	});
+
+
+	});
+
+
+ </script>
+
+</head>
+<body>
+
+<div class="container-fluid">
+  <h1>Game </h1>
+  <p>Click a alphabet below to start a game....</p>
+  
+	  <div class="row" id="alphabet">
+	    
+	  </div>
+
+	  <div >
+		
+	  </div>
+	  <div > 
+	  </div>
+	  <div class="row">
+  <div class="col-sm-8" > 
+  	<span id="question_span"> </span> <!--span-->
+  	<p id="fill_answer_p"> </p>
+  </div>
+  <div class="col-sm-4" s> 
+  	
+  		<p id="lives"> </p>  
+
+  </div>
+</div>
+
+
+</div>
+    
+</body>
+</html>

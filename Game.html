@@ -1,0 +1,241 @@
+<!--- 
+	How to use game: 
+
+
+
+
+	Ref :  links ...
+
+
+
+
+
+    -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style type="text/css">
+  	body{
+  		background-color: pink;
+  	}
+ 	p{
+ 		font-family:serif;
+ 		font-size: 30px;
+ 	}
+    #alphabet,#answer{
+        padding: 30px;
+
+    }
+	#answer{
+        padding-left: 180px;
+        
+    }
+   #question{
+        padding:60px;
+        
+    }
+    button{
+       width:8%;
+         display: block;
+         margin-top: 10px;
+
+       
+    }
+    #lives{
+    	padding:80px;
+    	
+    }
+    
+	
+	input[type="text"] {
+	    background-color: transparent;
+	    border: none;
+	    border-bottom: 2px solid gray;
+	    display: inline-block;
+	    font-size: 20px;
+	    margin: 0 5px;
+	    width: 2rem;
+	    text-align: center;
+	}
+
+  </style>
+
+
+  <script type="text/javascript">
+  	var alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+    var print;				// Display input text with perticular length
+    var counter=2;			// To keep track of chances to play
+    var result=0; 			// To calculate points depending on correct answer
+    var key_answer;			// Store answer from array
+    var ch=""; 				// To get alphabet onclick on button
+    var answer=[]; 			// Store each char typed
+    var id;					// Store array position of answer 
+    var allQuestions = [	// Array of question with answer and id
+	    {
+		    question: 'What is the capital city of Australia?',
+		    answer :'Melbourne', 
+		    id : 0
+		},
+		{
+		    question: 'Who won the 2014 FIFA World Cup?',
+		   	answer: 'Germany',
+			 id:1
+		},
+		{
+		    question: 'What book series is authored by J.K Rowling?',
+			answer: 'Harry Potter',
+		 	id: 2
+		},
+		{	   
+		    question: 'The Eiffel Tower is located in which following country?',
+		    answer: 'France',
+		    id: 3
+		}
+	];
+
+
+// Initial load alphabet buttons
+$(document).ready(function () {
+
+	for(let i=0;i<alphabet.length;i++) {
+	    var x=alphabet[i];
+  		print = '<button type="button" id='+x+'  class="btn btn-outline-success" >'+alphabet[i]+'</button>' ;
+  		print +='\xa0\xa0\xa0\xa0\xa0\xa0\xa0';  
+ 		$("#alphabet").append(print);
+  	}
+
+  	//Store the alphabet clicked
+  	$("button").click(function(){
+		ch = $(this).attr('id');
+		$(this).attr('disabled', 'disabled');
+		load_question(ch);
+		   
+  	});
+
+});
+
+
+// This function Load the question starting with the given character
+function load_question(ch) {
+    	
+	$("#answer").empty();
+	$("#lives").empty();
+	$("#question").empty();
+	    let question_found =false;
+		for (var i = 0; i < allQuestions.length; i++) {
+			// check first char of answer
+			console.log(ch);
+			if (ch ===  allQuestions[i].answer[0] ){  
+				var id=i;counter--;
+				key_answer = allQuestions[i].answer;
+				var answer_length =allQuestions[i].answer.length;
+
+				for(let j=0;j<answer_length;j++){
+					var print = '<input class="inputs" type="text" pattern="[a-z]" maxlength="1"> ';
+					$("#answer").append(print);
+				}
+
+				$("#lives").append("U have "+counter+" questions left to");
+				$("#question").append(allQuestions[i].question);
+				question_found=true;
+				break;
+			}
+		}
+
+		if(!question_found){
+			alert("Please try another character"); 
+		}
+
+	    // To capture keystores and to display answers 
+		$('.inputs').keyup(function () {
+
+			if (this.value.length == this.maxLength) {
+				console.log(this.value);
+				$(this).next('.inputs').focus();
+				answer.push(this.value);
+
+				var answer_str = "";
+				//answer.forEach(element => {str= str+element});
+				answer_str = answer.join("");	
+				console.log("string " + answer_str);
+				console.log(allQuestions[id].answer);
+
+	 		
+						//else bit problem here
+				if(answer_str.length === allQuestions[id].answer.length){
+
+					if(answer_str.toLowerCase() === allQuestions[id].answer.toLowerCase()){
+			 			result++; // score 
+			 			alert("correct answer");
+			 			$("#answer").empty();
+						$("#lives").empty();
+						$("#question").empty();
+						answer_str = "";
+						answer = [];
+					} else {
+						alert("wrong answer");
+						$("#answer").empty();
+						$("#lives").empty();
+						$("#question").empty();
+
+					}
+					if(counter === 0 ){
+  						$("#lives").append("U have scored "+result);
+						$("#question").append(" Press F5 to play again");
+
+  					}
+
+				}
+			}
+		    
+	});
+
+}
+ </script>
+
+</head>
+<body>
+
+<div class="container-fluid">
+  <h1>Game </h1>
+  <p>Click a alphabet below to start a game....</p>
+  
+	  <div class="row" id="alphabet">
+	    
+	  </div>
+
+	  <div >
+		
+	  </div>
+	  <div > 
+	  </div>
+	  <div class="row">
+  <div class="col-sm-8" > 
+  	<p id="question_p"> </p> <!--span-->
+  	<p id="fill_answer_p"> </p>
+  </div>
+  <div class="col-sm-4" s> 
+  	
+  		<p id="lives"> </p>  
+
+  </div>
+</div>
+
+
+</div>
+    
+</body>
+</html>
